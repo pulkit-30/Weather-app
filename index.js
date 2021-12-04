@@ -2,8 +2,8 @@ const api = {
   key: "4ea83ba19e749f256f9c2f13b57c6c89",
   base: "https://api.openweathermap.org/data/2.5/",
 };
-const img=document.getElementById('icon')
-const loader=document.getElementById("loader")
+const img = document.getElementById("icon");
+const loader = document.getElementById("loader");
 const searchbox = document.querySelector(".search-box");
 searchbox.addEventListener("keypress", (Key) => {
   if (Key.key === "Enter") {
@@ -12,41 +12,36 @@ searchbox.addEventListener("keypress", (Key) => {
 });
 
 function setQuery(evt) {
- return getResults(evt);
+  return getResults(evt);
 }
 setQuery("New Delhi");
-async function  getResults(query) {
-loader.style.display="block"
-  await fetch(
-    `${api.base}weather?q=${query}&units=metric&APPID=${api.key}`
-  )
+async function getResults(query) {
+  loader.style.display = "block";
+  await fetch(`${api.base}weather?q=${query}&units=metric&APPID=${api.key}`)
     .then((weather) => {
-    if(weather.ok){
-      loader.style.display="none"
-      return weather.json();
-    }else{
-      loader.style.display="none"
+      if (weather.ok) {
+        loader.style.display = "none";
+        return weather.json();
+      } else {
+        loader.style.display = "none";
 
-        alert("City Not Founded")
+        alert("City Not Founded");
         return;
       }
-
-
     })
     .then(displayResults);
-
 }
 
 function displayResults(weather) {
-  if(weather.main.temp<22){
-    document.getElementById("body").style.backgroundImage="url(./bg2.jpg)"
+  if (weather.main.temp < 22) {
+    document.getElementById("body").style.backgroundImage = "url(./bg2.jpg)";
   }
-  if(weather.main.temp>22){
-    document.getElementById("body").style.backgroundImage="url(./bg.jpg)"
+  if (weather.main.temp > 22) {
+    document.getElementById("body").style.backgroundImage = "url(./bg.jpg)";
   }
-  const iconCode=weather.weather[0].icon
-  let imageUrl="http://openweathermap.org/img/w/" + iconCode + ".png";
-img.setAttribute('src',imageUrl)
+  const iconCode = weather.weather[0].icon;
+  let imageUrl = "http://openweathermap.org/img/w/" + iconCode + ".png";
+  img.setAttribute("src", imageUrl);
   let city = document.querySelector(".location .city");
   city.innerText = `${weather.name}, ${weather.sys.country}`;
 
